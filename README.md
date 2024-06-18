@@ -79,4 +79,33 @@ Additional Features implemented:
 
 - Visual Feedback: The use of a bacteria image and a subtle vibration animation makes the occupied cells visually distinctive, enhancing the user experience.
 
+Performance metrics:Measured using browser developer tools.
+
+Load Time Metrics
+
+Initial Load Time:
+
+- `domContentLoadedEventEnd`: 343 ms
+- `loadEventEnd`: 441 ms
+- Description: Time taken for the application to become fully interactive after accessing http://localhost:3000.
+
+Cell Click Event Metrics
+
+Cell Click Event:
+
+  - Total Time:201.01 ms
+  - Self Time:201.01 ms
+  - Input Delay:37 ms
+  - Processing Duration:82 ms
+  - Presentation Delay:82.009 ms
+
+Memory Usage Metrics
+
+JS Heap:
+
+    - Initial: 4.5 MB
+    - Peak: 8.9 MB
+Description:Memory usage statistics measured during the application's runtime.
+
+
 
