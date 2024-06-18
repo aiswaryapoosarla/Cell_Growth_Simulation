@@ -4,13 +4,15 @@ import './Grid.css';
 import GrowthChart from './GrowthChart';
 
 const Grid: React.FC = () => {
-    const [occupancyPercentage, setOccupancyPercentage] = useState<number>(20); // Default to 20%
+    const [occupancyPercentage, setOccupancyPercentage] = useState<number>(20); // Default occupancy set to 20%
+    const [gridSize, setGridSize] = useState<number>(20); // Default to 20x20
+    const [cellSize, setCellSize] = useState<number>(25); // Default cell size
 
-    const generateInitialGrid = (percentage: number): boolean[][] => {
+    const generateInitialGrid = (percentage: number, size: number): boolean[][] => {
         const grid: boolean[][] = [];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < size; i++) {
             const row: boolean[] = [];
-            for (let j = 0; j < 20; j++) {
+            for (let j = 0; j < size; j++) {
                 row.push(Math.random() < (percentage / 100));
             }
             grid.push(row);
@@ -18,7 +20,7 @@ const Grid: React.FC = () => {
         return grid;
     };
 
-    const [grid, setGrid] = useState<boolean[][]>(generateInitialGrid(occupancyPercentage));
+    const [grid, setGrid] = useState<boolean[][]>(generateInitialGrid(occupancyPercentage, gridSize));
     const [expanding, setExpanding] = useState<boolean>(false);
     const [timerInSeconds, setTimerInSeconds] = useState<number>(2);
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
@@ -27,6 +29,16 @@ const Grid: React.FC = () => {
     const [activeButton, setActiveButton] = useState<string | null>(null);
     const [growthData, setGrowthData] = useState<number[]>([]);
     const [timeLabels, setTimeLabels] = useState<number[]>([]);
+
+    useEffect(() => {
+        const updateCellSize = () => {
+            const containerSize = Math.min(window.innerWidth, window.innerHeight) * 0.8;
+            setCellSize(containerSize / gridSize);
+        };
+        updateCellSize();
+        window.addEventListener('resize', updateCellSize);
+        return () => window.removeEventListener('resize', updateCellSize);
+    }, [gridSize]);
 
     const countOccupiedCells = (grid: boolean[][]): number => {
         return grid.flat().filter(cell => cell).length;
@@ -46,7 +58,7 @@ const Grid: React.FC = () => {
                                 for (const [rOffset, cOffset] of directions) {
                                     const r = rowIndex + rOffset;
                                     const c = colIndex + cOffset;
-                                    if (r >= 0 && r < 20 && c >= 0 && c < 20 && !prevGrid[r][c]) {
+                                    if (r >= 0 && r < gridSize && c >= 0 && c < gridSize && !prevGrid[r][c]) {
                                         newGrid[r][c] = true;
                                         break;
                                     }
@@ -73,7 +85,7 @@ const Grid: React.FC = () => {
                 setIntervalId(null);
             }
         };
-    }, [expanding, paused, timerInSeconds, intervalId]);
+    }, [expanding, paused, timerInSeconds, intervalId, gridSize]);
 
     const handleStartPause = () => {
         if (paused) {
@@ -92,7 +104,7 @@ const Grid: React.FC = () => {
     };
 
     const handleReset = () => {
-        setGrid(generateInitialGrid(occupancyPercentage));
+        setGrid(generateInitialGrid(occupancyPercentage, gridSize));
         setExpanding(false);
         setPaused(true);
         setHasStarted(false);
@@ -112,7 +124,13 @@ const Grid: React.FC = () => {
     const handleOccupancyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newPercentage = Number(event.target.value);
         setOccupancyPercentage(newPercentage);
-        setGrid(generateInitialGrid(newPercentage));
+        setGrid(generateInitialGrid(newPercentage, gridSize));
+    };
+
+    const handleGridSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newSize = Number(event.target.value);
+        setGridSize(newSize);
+        setGrid(generateInitialGrid(occupancyPercentage, newSize));
     };
 
     const handleCellClick = (rowIndex: number, colIndex: number) => {
@@ -127,7 +145,7 @@ const Grid: React.FC = () => {
         <div className="container">
             <div className="grid-chart-container">
                 <div className="grid-container">
-                    <div className="grid">
+                    <div className="grid" style={{ '--cell-size': `${cellSize}px`, '--grid-size': gridSize } as React.CSSProperties}>
                         {grid.map((row, rowIndex) => (
                             <div key={rowIndex} className="row">
                                 {row.map((isOccupied, colIndex) => (
@@ -144,7 +162,7 @@ const Grid: React.FC = () => {
                 <div className="chart-container">
                     <GrowthChart growthData={growthData} timeLabels={timeLabels} />
                     <div className="controls-container">
-                        <div className="timer-container">
+                        <div className="input-container">
                             <label htmlFor="timer">Timer(sec)</label>
                             <input
                                 type="number"
@@ -156,7 +174,7 @@ const Grid: React.FC = () => {
                                 step="1"
                             />
                         </div>
-                        <div className="occupancy-container">
+                        <div className="input-container">
                             <label htmlFor="occupancy">Initial Occupancy (%)</label>
                             <input
                                 type="number"
@@ -168,6 +186,20 @@ const Grid: React.FC = () => {
                                 max="100"
                                 step="1"
                             />
+                        </div>
+                        <div className="input-container">
+                            <label htmlFor="gridSize">Grid Size</label>
+                            <input
+                                type="number"
+                                id="gridSize"
+                                value={gridSize}
+                                onChange={handleGridSizeChange}
+                                disabled={hasStarted} // Disabled when the simulation has started
+                                min="5"
+                                max="100"
+                                step="1"
+                            />
+                        </div>
                         </div>
                         <div className="button-container">
                             <button
@@ -183,7 +215,7 @@ const Grid: React.FC = () => {
                                 Reset
                             </button>
                         </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -192,4 +224,4 @@ const Grid: React.FC = () => {
 
 export default Grid;
 
-export{};
+export {};
