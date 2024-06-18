@@ -105,6 +105,7 @@ JS Heap:
 
 - Initial: 4.5 MB
 - Peak: 8.9 MB
+  
 Description:Memory usage statistics measured during the application's runtime.
 
 
