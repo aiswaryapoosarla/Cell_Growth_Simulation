@@ -24,12 +24,15 @@ Installation
     cd Cell_Growth_Simulation
 
 3. Install Dependencies:
+   
    npm install
    
 4. Start the Development Server:
+   
    npm start
    
 5. Open the Application:
+   
    Open your web browser and navigate to `http://localhost:3000`.
 
 Using the Application:
