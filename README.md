@@ -17,13 +17,16 @@ Installation
 
 1. Clone the Repository:
 
-    https://github.com/aiswaryapoosarla/Cell_Growth_Simulation.git   
+    git clone https://github.com/aiswaryapoosarla/Cell_Growth_Simulation.git
+   
+2. Navigate to the application folder:
+   
     cd Cell_Growth_Simulation
 
-2. Install Dependencies:
+3. Install Dependencies:
    npm install
    
-3. Start the Development Server:
+4. Start the Development Server:
    npm start
    
 5. Open the Application:
