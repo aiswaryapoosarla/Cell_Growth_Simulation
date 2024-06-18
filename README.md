@@ -1,4 +1,4 @@
-Bacterial Cell Growth Simulation Overview:
+Cell Growth Simulation Overview:
 
 This project simulates the growth of bacterial colony where users can visualize how bacteria cells divide and spread within a confined grid over time. The main features of this project include:
 
