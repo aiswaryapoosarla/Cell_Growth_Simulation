@@ -17,8 +17,8 @@ Installation
 
 1. Clone the Repository:
 
-  https://github.com/aiswaryapoosarla/Cell_Growth_Simulation.git   
-  cd Cell_Growth_Simulation
+    https://github.com/aiswaryapoosarla/Cell_Growth_Simulation.git   
+    cd Cell_Growth_Simulation
 
 2. Install Dependencies:
    npm install
@@ -61,7 +61,7 @@ Project Structure and Key Components:
    - Main application component.
    - Combines the grid,cell and growth chart components.
 
-5 Index.css and Grid.css:
+5. Index.css and Grid.css:
    - Index.css: Global styles including background images and basic body styling.
    - Grid.css: Styles specific to grid and cell layout, ensuring proper display and visual distinction for occupied cells.
 
